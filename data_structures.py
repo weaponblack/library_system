@@ -103,7 +103,7 @@ class Queue:
         """Initialize an empty queue."""
         self.items = []
 
-    def enqueue(self, user_id: str, book_stock: int):
+    def enqueue(self, user_id: str, book_stock: int, isbn: str):
         """
         Add a reservation to the queue. 
         Only allowed if book stock is 0.
@@ -111,6 +111,7 @@ class Queue:
         Args:
             user_id (str): The ID of the user making the reservation.
             book_stock (int): The current stock of the book.
+            isbn (str): The ISBN of the book being reserved.
         
         Returns:
             bool: True if enqueued successfully, False otherwise.
@@ -121,6 +122,7 @@ class Queue:
         
         record = {
             "user_id": user_id,
+            "isbn": isbn,
             "request_date": datetime.now().isoformat()
         }
         self.items.append(record)
@@ -136,6 +138,37 @@ class Queue:
         if not self.is_empty():
             return self.items.pop(0)
         return None
+
+    def dequeue_by_isbn(self, isbn: str):
+        """
+        Remove and return the oldest reservation for a specific ISBN.
+
+        Args:
+            isbn (str): The ISBN to search for.
+
+        Returns:
+            dict: The matching reservation record, or None if not found.
+        """
+        for i, item in enumerate(self.items):
+            if item.get('isbn') == isbn:
+                return self.items.pop(i)
+        return None
+
+    def count_reservations(self, isbn: str):
+        """
+        Count the number of active reservations for a specific ISBN.
+
+        Args:
+            isbn (str): The ISBN to count.
+
+        Returns:
+            int: The number of reservations.
+        """
+        count = 0
+        for item in self.items:
+            if item.get('isbn') == isbn:
+                count += 1
+        return count
 
     def peek(self):
         """

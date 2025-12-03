@@ -289,12 +289,38 @@ class BookManagementFrame(ttk.Frame):
                  messagebox.showinfo("Result", "Book not found (Linear Search).")
         
         elif method == "binary":
-            book = self.manager.find_book_by_isbn(isbn)
+            # Use binary_search directly to get index
+            import searching_algorithms
+            # Ensure ordered inventory is sorted (it should be, but binary search requires it)
+            # self.manager.ordered_inventory is sorted by insertion logic
+            
+            index = searching_algorithms.binary_search(self.manager.ordered_inventory, isbn)
+            
             self.tree.delete(*self.tree.get_children())
-            if book:
+            if index != -1:
+                book = self.manager.ordered_inventory[index]
                 self.tree.insert("", tk.END, values=(book.isbn, book.title, book.author, book.weight_kg, book.value_cop, book.stock))
+                
+                msg = f"Book found at position {index}."
+                if book.stock == 0:
+                    res_count = self.manager.reservations.count_reservations(isbn)
+                    msg += f"\n\nWARNING: Book is out of stock."
+                    if res_count > 0:
+                        msg += f"\nThere are {res_count} active reservation(s) for this ISBN."
+                    else:
+                        msg += "\nNo active reservations."
+                
+                messagebox.showinfo("Result", msg)
             else:
-                messagebox.showinfo("Result", "Book not found (Binary Search).")
+                # Check for active reservations
+                res_count = self.manager.reservations.count_reservations(isbn)
+                msg = f"Book not found in inventory."
+                if res_count > 0:
+                    msg += f"\n\nHowever, there are {res_count} active reservation(s) for this ISBN."
+                else:
+                    msg += "\nNo active reservations for this ISBN."
+                
+                messagebox.showinfo("Result", msg)
 
     def list_general(self):
         self.tree.delete(*self.tree.get_children())
@@ -607,7 +633,7 @@ class ReservationManagementFrame(ttk.Frame):
             messagebox.showerror("Error", "User ID not found.")
             return
 
-        if self.manager.reservations.enqueue(user_id, book.stock):
+        if self.manager.reservations.enqueue(user_id, book.stock,isbn):
             messagebox.showinfo("Success", "Reservation added to queue.")
             self.refresh_queue()
         else:
