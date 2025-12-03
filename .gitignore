@@ -26,6 +26,9 @@ Thumbs.db
 # Project specific
 # Assuming reports are generated output
 reports/
+data/loans.json
+data/reservations.json
+
 
 # Tests
 Tests/
