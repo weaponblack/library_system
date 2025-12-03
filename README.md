@@ -1,61 +1,61 @@
 # Library Management System
 
-A modular Python project implementing a Library Management System with custom data structures, sorting/searching algorithms, and problem-solving modules.
+A comprehensive Library Management System featuring a modern GUI, custom data structures, and algorithmic demonstrations.
+
+## Features
+
+-   **User Management**: Register, update, and delete library users.
+-   **Book Management**: Full CRUD operations for books, including stock tracking.
+-   **Shelf Management**: Build custom shelves and run optimization algorithms (Brute Force, Backtracking).
+-   **Loans**: Borrow and return books using a **Stack** data structure to track history.
+-   **Reservations**: Reserve out-of-stock books using a **Queue** data structure to ensure fair waiting lists.
+-   **Reports**: Generate value-based inventory reports using **Merge Sort**.
+-   **Algorithms Demo**: Visualize recursion algorithms for statistical analysis.
 
 ## Project Structure
 
-- `models.py`: Core `Book` and `User` classes.
-- `data_structures.py`: Custom `Stack` (LIFO) and `Queue` (FIFO) implementations with file persistence.
-- `sorting_algorithms.py`: `insertion_sort` and `merge_sort`.
-- `searching_algorithms.py`: `linear_search` and `binary_search`.
-- `problem_solving.py`: Brute force, backtracking, and recursion algorithms.
-- `inventory_manager.py`: Central controller class.
-- `main.py`: Demonstration script.
-- `data/`: Contains input data (`books.csv`) and saved structures.
-- `reports/`: Contains generated reports.
+-   `gui.py`: **Main Entry Point**. The Graphical User Interface application.
+-   `main.py`: CLI demonstration script (legacy/demo mode).
+-   `inventory_manager.py`: Core backend logic and controller.
+-   `models.py`: Data models (`Book`, `User`).
+-   `data_structures.py`: Custom `Stack` and `Queue` implementations.
+-   `sorting_algorithms.py`: `insertion_sort` and `merge_sort`.
+-   `searching_algorithms.py`: `linear_search` and `binary_search`.
+-   `problem_solving.py`: Optimization and recursion algorithms.
+-   `data/`: Stores CSV/JSON data files.
+-   `reports/`: Stores generated reports.
 
 ## How to Run
 
-1.  Ensure you have Python 3.10+ installed.
-2.  Navigate to the project root directory.
-3.  Run the main script:
+### 1. Graphical Interface (Recommended)
+Run the full GUI application:
+
+```bash
+python gui.py
+```
+
+### 2. CLI Demo
+Run the console-based algorithm demonstration:
 
 ```bash
 python main.py
 ```
 
-## Expected Outputs
-
-- **Console**: The script will print the status of data loading, results of sorting/searching, simulation of loans/reservations, and the output of the shelf algorithms (including backtracking steps).
-- **Files**:
-    - `data/history.json`: Saved stack of user loan history.
-    - `data/reservations.json`: Saved queue of book reservations.
-    - `reports/inventory_by_value.csv`: Inventory sorted by value (COP).
-
 ## Algorithm Analysis
 
 ### Sorting
-- **Insertion Sort**: Used for maintaining the ordered inventory.
-    - Time Complexity: O(n^2) worst case, O(n) best case (nearly sorted).
-    - Space Complexity: O(1) (in-place).
-    - Trade-off: Efficient for small or nearly sorted datasets, but inefficient for large unsorted lists.
-- **Merge Sort**: Used for generating value reports.
-    - Time Complexity: O(n log n) always.
-    - Space Complexity: O(n) (requires auxiliary space).
-    - Trade-off: Stable and consistent performance, but uses more memory.
+-   **Insertion Sort**: Used in real-time to keep the `ordered_inventory` sorted by ISBN.
+-   **Merge Sort**: Used to generate the "Inventory by Value" report efficiently ($O(n \log n)$).
 
 ### Searching
-- **Linear Search**:
-    - Time Complexity: O(n).
-    - Trade-off: Simple, works on unsorted data, but slow for large datasets.
-- **Binary Search**:
-    - Time Complexity: O(log n).
-    - Trade-off: Extremely fast, but requires the data to be sorted first.
+-   **Binary Search**: Used for fast ISBN lookups in the ordered inventory ($O(\log n)$).
+-   **Linear Search**: Used for searching by Title or Author ($O(n)$).
+
+### Data Structures
+-   **Stack (LIFO)**: Manages User Loan History.
+-   **Queue (FIFO)**: Manages Book Reservations.
 
 ### Problem Solving
-- **Brute Force (Heavy Shelf)**:
-    - Time Complexity: O(n^4) (4 nested loops).
-    - Trade-off: Guarantees finding all combinations, but computationally expensive and unscalable.
-- **Backtracking (Optimal Shelf)**:
-    - Time Complexity: O(2^n) worst case (subset sum variation).
-    - Trade-off: Can find the optimal solution and prune invalid paths, but still exponential in worst case.
+-   **Brute Force**: Finds all combinations of books on a shelf heavier than a limit.
+-   **Backtracking**: Finds the optimal set of books (max value) that fits within a weight limit (Knapsack problem).
+-   **Recursion**: Calculates total value and average weight of books by a specific author.
