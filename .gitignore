@@ -28,7 +28,7 @@ Thumbs.db
 reports/
 data/loans.json
 data/reservations.json
-
+main.py
 
 # Tests
 Tests/
